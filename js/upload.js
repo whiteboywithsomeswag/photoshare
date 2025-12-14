@@ -3,9 +3,7 @@
 // ===============================
 const CLOUD_NAME = "dv8goucns";
 const UPLOAD_PRESET = "UploadPreset";
-
-const GIST_ID = "66b57f0909fc1ec6ccae418c10ec5515";
-const GITHUB_TOKEN = "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"; // keep secret
+const MANIFEST_PATH = "./manifest.json";
 
 // ===============================
 // MAIN UPLOAD FUNCTION
@@ -31,18 +29,22 @@ async function uploadImages() {
   status.textContent = "Loading manifest…";
 
   // ===============================
-  // 1️⃣ LOAD MANIFEST FROM GIST
+  // 1️⃣ LOAD LOCAL MANIFEST
   // ===============================
-  const gistRes = await fetch(`https://api.github.com/gists/${GIST_ID}`);
-  if (!gistRes.ok) {
-    alert("Failed to load gist");
+  let manifest;
+
+  try {
+    const res = await fetch(MANIFEST_PATH, { cache: "no-store" });
+    if (!res.ok) throw new Error();
+    manifest = await res.json();
+  } catch {
+    alert("Failed to load manifest.json");
     return;
   }
 
-  const gist = await gistRes.json();
-  const manifest = JSON.parse(
-    gist.files["manifest.json"].content
-  );
+  if (!manifest.folders) {
+    manifest.folders = {};
+  }
 
   if (!manifest.folders[slug]) {
     manifest.folders[slug] = {
@@ -66,7 +68,10 @@ async function uploadImages() {
 
     const uploadRes = await fetch(
       `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-      { method: "POST", body: formData }
+      {
+        method: "POST",
+        body: formData
+      }
     );
 
     if (!uploadRes.ok) {
@@ -75,35 +80,26 @@ async function uploadImages() {
     }
 
     const data = await uploadRes.json();
-
-    // ✅ store public_id
     manifest.folders[slug].images.push(data.public_id);
   }
 
   // ===============================
-  // 3️⃣ SAVE MANIFEST BACK TO GIST
+  // 3️⃣ DOWNLOAD UPDATED MANIFEST
   // ===============================
-  status.textContent = "Saving manifest…";
+  status.textContent = "Downloading updated manifest…";
 
-  const saveRes = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
-    method: "PATCH",
-    headers: {
-      "Authorization": `token ${GITHUB_TOKEN}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      files: {
-        "manifest.json": {
-          content: JSON.stringify(manifest, null, 2)
-        }
-      }
-    })
-  });
+  const blob = new Blob(
+    [JSON.stringify(manifest, null, 2)],
+    { type: "application/json" }
+  );
 
-  if (!saveRes.ok) {
-    alert("Failed to save manifest");
-    return;
-  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "manifest.json";
+  a.click();
 
-  status.textContent = "✅ Upload complete";
+  URL.revokeObjectURL(url);
+
+  status.textContent = "✅ Upload complete — commit the new manifest.json";
 }
