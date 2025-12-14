@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Photo Galleries</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system;
+      background: #fff;
+    }
+
+    h1 {
+      margin: 0;
+      padding: 16px;
+      font-size: 1.4rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    /* ===== Folder Grid ===== */
+    .folder-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .folder-card {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      border-radius: 14px;
+      overflow: hidden;
+      background-color: #333;
+      background-size: cover;
+      background-position: center;
+      text-decoration: none;
+      color: white;
+    }
+
+    .folder-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.65),
+        rgba(0,0,0,0.15)
+      );
+    }
+
+    .folder-title {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      z-index: 1;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Photo Galleries</h1>
+
+<div id="folders" class="folder-grid"></div>
+
+<script src="js/public.js"></script>
+</body>
+</html>

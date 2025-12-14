@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photo Gallery</title>
+<style>
+* {
+box-sizing: border-box;
+}
+
+body {
+margin: 0;
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+padding: 40px 20px;
+}
+
+.container {
+max-width: 1400px;
+margin: 0 auto;
+}
+
+header {
+text-align: center;
+margin-bottom: 50px;
+color: white;
+}
+
+h1 {
+margin: 0 0 10px 0;
+font-size: 3rem;
+font-weight: 700;
+letter-spacing: -1px;
+text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+}
+
+.subtitle {
+font-size: 1.1rem;
+opacity: 0.9;
+font-weight: 300;
+}
+
+.grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+gap: 20px;
+}
+
+.photo-card {
+background: white;
+border-radius: 12px;
+overflow: hidden;
+box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+cursor: pointer;
+}
+
+.photo-card:hover {
+transform: translateY(-8px);
+box-shadow: 0 20px 25px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.1);
+}
+
+.photo-card img {
+width: 100%;
+height: 280px;
+object-fit: cover;
+display: block;
+transition: transform 0.3s ease;
+}
+
+.photo-card:hover img {
+transform: scale(1.05);
+}
+
+.photo-info {
+padding: 16px;
+}
+
+.photo-title {
+margin: 0 0 8px 0;
+font-size: 1rem;
+font-weight: 600;
+color: #1a202c;
+}
+
+.photo-date {
+margin: 0;
+font-size: 0.875rem;
+color: #718096;
+}
+
+/* Loading state */
+.loading {
+text-align: center;
+color: white;
+padding: 60px 20px;
+font-size: 1.2rem;
+}
+
+.loading::after {
+content: '...';
+animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+0%, 20% { content: '.'; }
+40% { content: '..'; }
+60%, 100% { content: '...'; }
+}
+
+/* Empty state */
+.empty-state {
+text-align: center;
+color: white;
+padding: 80px 20px;
+}
+
+.empty-state svg {
+width: 80px;
+height: 80px;
+margin-bottom: 20px;
+opacity: 0.7;
+}
+
+.empty-state h2 {
+font-size: 1.5rem;
+margin: 0 0 10px 0;
+}
+
+.empty-state p {
+font-size: 1rem;
+opacity: 0.8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+body {
+padding: 20px 12px;
+}
+
+h1 {
+font-size: 2rem;
+}
+
+.grid {
+grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+gap: 12px;
+}
+
+.photo-card img {
+height: 200px;
+}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Photo Gallery</h1>
+<p class="subtitle">Capturing moments, creating memories</p>
+</header>
+<div class="grid" id="photos">
+<div class="loading">Loading photos</div>
+</div>
+</div>
+<script src="js/public.js"></script>
+</body>
+</html>
