@@ -19,13 +19,8 @@ function getParam(name) {
 // LOAD MANIFEST FROM GIST
 // ===============================
 async function loadManifest() {
-  const res = await fetch(
-    "https://gist.githubusercontent.com/YOUR_USERNAME/66b57f0909fc1ec6ccae418c10ec5515/raw/manifest.json",
-    { cache: "no-store" }
-  );
-
+  const res = await fetch("./manifest.json", { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load manifest");
-
   return res.json();
 }
 
