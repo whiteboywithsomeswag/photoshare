@@ -56,7 +56,6 @@ async function renderFolders() {
       const coverUrl = coverId
         ? `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/w_500,h_500,c_fill/${coverId}`
         : "";
-        alert(coverUrl);
 
       const card = document.createElement("a");
       card.href = `gallery.html?f=${slug}`;
@@ -85,7 +84,9 @@ async function renderFolders() {
 // ===============================
 async function renderGallery() {
   const container = qs("photos");
+
   if (!container) return;
+    container.innerHTML = "";
 
   const slug = getParam("f");
   if (!slug) {
