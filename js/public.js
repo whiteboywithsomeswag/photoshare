@@ -54,7 +54,6 @@ async function renderFolders() {
       const coverId = images.length
         ? images[Math.floor(Math.random() * images.length)]
         : null;
-      
 
       const coverUrl = coverId
         ? `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/w_500,h_500,c_fill/${coverId}`
@@ -81,6 +80,7 @@ async function renderFolders() {
     container.textContent = "Failed to load galleries.";
   }
 }
+
 
 // ===============================
 // GALLERY PAGE – IMAGE GRID
