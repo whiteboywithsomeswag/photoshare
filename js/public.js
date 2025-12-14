@@ -50,7 +50,10 @@ async function renderFolders() {
     }
 
     Object.entries(folders).forEach(([slug, folder]) => {
-      const coverId = folder.images?.[0];
+      const images = folder.images || [];
+      const coverId = images.length
+        ? images[Math.floor(Math.random() * images.length)]
+        : null;
       
 
       const coverUrl = coverId
